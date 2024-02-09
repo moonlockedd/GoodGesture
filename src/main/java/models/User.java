@@ -73,13 +73,14 @@ public class User {
     }
 
     //overriding
+    @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", age=" + age +
-                ", gender='" + gender + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", surname='" + getSurname() + '\'' +
+                ", age=" + getAge() +
+                ", gender='" + getGender() + '\'' +
                 '}';
     }
 }

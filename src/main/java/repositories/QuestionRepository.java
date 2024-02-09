@@ -7,6 +7,7 @@ import repositories.interfaces.IChoiceRepository;
 import repositories.interfaces.IQuestionRepository;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionRepository implements IQuestionRepository {
@@ -31,8 +32,7 @@ public class QuestionRepository implements IQuestionRepository {
             List<Choice> choices = choiceRepo.getChoices(id, subject);
 
             // Prepare sql statement and execute it
-            String sql = "SELECT question_text, explanation FROM questions " +
-                    "WHERE id=? AND subject=?";
+            String sql = "SELECT question_text, explanation FROM questions WHERE id=? AND subject=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, id);
             st.setString(2, subject);
@@ -64,10 +64,43 @@ public class QuestionRepository implements IQuestionRepository {
 
     @Override
     public List<Question> getAllQuestions(String subject) {
+        return null;
+    }
+
+
+    @Override
+    public List<Question> getAllQuestions(String subject, String type) {
         Connection con = null;
+        List<Question> questions = null;
 
         try {
-            // Write here!!!
+            //establish connection
+            con = db.getConnection();
+
+            //initialize the ArrayList
+            questions = new ArrayList<>();
+
+            //prepare SQL statement than execute it
+            String sql = "SELECT id, question_text, explanation FROM questions WHERE subject=? AND type=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, subject);
+            st.setString(2, type);
+
+            ResultSet rs = st.executeQuery();
+
+            //iterate through the result set
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String questionText = rs.getString("question_text");
+                String explanation = rs.getString("explanation");
+
+                //get choices for the current question id and subject
+                List<Choice> choices = choiceRepo.getChoices(id, subject);
+
+                //create a new Question object
+                Question question = new Question(questionText, explanation, choices);
+                questions.add(question);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Exception: ");
@@ -76,11 +109,11 @@ public class QuestionRepository implements IQuestionRepository {
             try {
                 if (con != null) con.close();
             } catch (SQLException e) {
-                System.out.println("Could not close connection: ");
+                System.out.println("Could not close connection");
                 System.out.println(e.getMessage());
             }
         }
 
-        return null;
+        return questions;
     }
 }

@@ -20,7 +20,7 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public Question getQuestion(int id, String subject) {
+    public Question getQuestion(int id) {
         Question question = null;
         Connection con = null;
 
@@ -28,18 +28,15 @@ public class QuestionRepository implements IQuestionRepository {
             // Establish connection
             con = db.getConnection();
 
-            // List to store question choices
-            List<Choice> choices = choiceRepo.getChoices(id, subject);
-
             // Prepare sql statement and execute it
-            String sql = "SELECT question_text, explanation FROM questions WHERE id=? AND subject=?";
+            String sql = "SELECT question_text, explanation FROM questions WHERE id=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, id);
-            st.setString(2, subject);
 
             ResultSet rs = st.executeQuery();
-
-            if (rs.next() && choices != null) {
+            if (rs.next()) {
+                // List to store question choices
+                List<Choice> choices = choiceRepo.getChoices(id);
                 question = new Question(
                         rs.getString("question_text"),
                         rs.getString("explanation"),
@@ -63,24 +60,17 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public List<Question> getAllQuestions(String subject) {
-        return null;
-    }
-
-
-    @Override
     public List<Question> getAllQuestions(String subject, String type) {
         Connection con = null;
-        List<Question> questions = null;
 
         try {
-            //establish connection
+            // Establish connection
             con = db.getConnection();
 
-            //initialize the ArrayList
-            questions = new ArrayList<>();
+            // ArrayList to store questions
+            List<Question> questions = new ArrayList<>();
 
-            //prepare SQL statement than execute it
+            // Prepare SQL statement and execute it
             String sql = "SELECT id, question_text, explanation FROM questions WHERE subject=? AND type=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, subject);
@@ -88,21 +78,25 @@ public class QuestionRepository implements IQuestionRepository {
 
             ResultSet rs = st.executeQuery();
 
-            //iterate through the result set
+            // Iterate through the result set
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String questionText = rs.getString("question_text");
-                String explanation = rs.getString("explanation");
+                // Get choices for the current question id and subject
+                List<Choice> choices = choiceRepo.getChoices(rs.getInt("id"));
 
-                //get choices for the current question id and subject
-                List<Choice> choices = choiceRepo.getChoices(id, subject);
+                // Create a new Question object
+                Question question = new Question(
+                        rs.getString("question_text"),
+                        rs.getString("explanation"),
+                        choices
+                );
 
-                //create a new Question object
-                Question question = new Question(questionText, explanation, choices);
+                // Add Question object to a list
                 questions.add(question);
             }
 
-        } catch (SQLException e) {
+            return questions;
+
+        } catch (Exception e) {
             System.out.println("SQL Exception: ");
             System.out.println(e.getMessage());
         } finally {
@@ -114,6 +108,7 @@ public class QuestionRepository implements IQuestionRepository {
             }
         }
 
-        return questions;
+        return null;
     }
+
 }

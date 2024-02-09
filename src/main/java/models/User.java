@@ -81,6 +81,6 @@ public class User {
                 ", surname='" + getSurname() + '\'' +
                 ", age=" + getAge() +
                 ", gender='" + getGender() + '\'' +
-                '}';
+                " }";
     }
 }

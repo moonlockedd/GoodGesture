@@ -3,13 +3,14 @@ package models;
 import java.util.ArrayList;
 
 public class TestQuestion {
+    private int id;
     private String question;
     private String explanation;
     private ArrayList<QuestionVariant> variants;
     public TestQuestion(){
 
     }
-    public TestQuestion(String question,String explanation){
+    public TestQuestion(int id,String question,String explanation){
 
     }
 
@@ -17,6 +18,12 @@ public class TestQuestion {
         this.question = question;
     }
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getQuestion() {
         return question;
     }
@@ -31,8 +38,8 @@ public class TestQuestion {
 
     public String toString() {
         return "Question: " + getQuestion() +
-                "Explanation " + getExplanation();
+                "Explanation " + getExplanation()+
+                "Id=" + getId();
     }
-
 
 }

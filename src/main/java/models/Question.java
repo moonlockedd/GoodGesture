@@ -1,6 +1,5 @@
 package models;
 
-import java.awt.Choice;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ public class Question {
     private String questionText;
     // Explanation of the answer
     private String explanation;
-    // List to store answer variants
+    // List to store question choices
     private List<Choice> choices;
 
     // Allocate memory for choices
@@ -17,10 +16,11 @@ public class Question {
         this.choices = new ArrayList<>();
     }
 
-    public Question(String questionText, String explanation) {
+    public Question(String questionText, String explanation, List<Choice> choices) {
         this();
         this.questionText = questionText;
         this.explanation = explanation;
+        this.choices = choices;
     }
 
     public String getQuestionText() {
@@ -39,9 +39,12 @@ public class Question {
         this.explanation = explanation;
     }
 
-    // Add new choices to question
-    public void addChoice(Choice choice) {
-        this.choices.add(choice);
+    public int getNumberOfChoices() {
+        return this.choices.size();
+    }
+
+    public Choice getChoice(int index) {
+        return choices.get(index);
     }
 
     public String toString() {

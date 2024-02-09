@@ -1,19 +1,14 @@
 package models;
 
-import java.util.ArrayList;
-//st
 public class User {
     private int id;
     private String name;
     private String surname;
     private int age;
-    private String gender;
-
-    //to hold multiple user objects - arraylist
-    private static ArrayList<User> userList = new ArrayList<>();
+    private boolean gender;
 
     //constructor
-    public User(int id, String name, String surname, int age, String gender) {
+    public User(int id, String name, String surname, int age, boolean gender) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -21,7 +16,6 @@ public class User {
         this.gender = gender;
     }
 
-    //get/setter
     public int getId() {
         return id;
     }
@@ -54,33 +48,21 @@ public class User {
         this.age = age;
     }
 
-    public String getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
-    }
-
-    //getter for userlist
-    public static ArrayList<User> getUserList() {
-        return userList;
-    }
-
-    //added a user object to userlist
-    public static void addUser(User user) {
-        userList.add(user);
     }
 
     //overriding
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", surname='" + getSurname() + '\'' +
-                ", age=" + getAge() +
-                ", gender='" + getGender() + '\'' +
-                " }";
+        return getId() + ": " +
+                getName() + " " +
+                getSurname() + " " +
+                getAge() + " " +
+                (getGender() ? "male" : "female");
     }
 }

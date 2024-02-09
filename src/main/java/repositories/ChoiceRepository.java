@@ -21,11 +21,13 @@ public class ChoiceRepository implements IChoiceRepository {
         Connection con = null;
 
         try {
-            // List to store choices
-            List<Choice> choices = new ArrayList<>();
-
             // Establish connection
             con = db.getConnection();
+
+            // Allocate memory to list storing question choices
+            List<Choice> choices = new ArrayList<>();
+
+            // Prepare sql statement and execute it
             String sql = "SELECT correct_choices, incorrect_choices FROM questions WHERE id=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, id);
@@ -57,13 +59,13 @@ public class ChoiceRepository implements IChoiceRepository {
             Collections.shuffle(choices);
 
             return choices;
+
         } catch (SQLException e) {
             System.out.println("SQL Exception: ");
             System.out.println(e.getMessage());
         } finally {
             try {
-                if (con != null)
-                    con.close();
+                if (con != null) con.close();
             } catch (SQLException e) {
                 System.out.println("Could not close connection");
                 System.out.println(e.getMessage());

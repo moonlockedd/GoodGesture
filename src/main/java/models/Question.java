@@ -9,15 +9,9 @@ public class Question {
     // Explanation of the answer
     private String explanation;
     // List to store question choices
-    private List<Choice> choices;
-
-    // Allocate memory for choices
-    public Question() {
-        this.choices = new ArrayList<>();
-    }
+    private final List<Choice> choices;
 
     public Question(String questionText, String explanation, List<Choice> choices) {
-        this();
         this.questionText = questionText;
         this.explanation = explanation;
         this.choices = choices;

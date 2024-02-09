@@ -23,9 +23,13 @@ public class QuestionRepository implements IQuestionRepository {
         Connection con = null;
 
         try {
+            // Establish connection
             con = db.getConnection();
+
+            // List to store question choices
             List<Choice> choices = choiceRepo.getChoices(id);
 
+            // Prepare sql statement and execute it
             String sql = "SELECT question_text, explanation FROM questions WHERE id=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, id);
@@ -39,22 +43,16 @@ public class QuestionRepository implements IQuestionRepository {
                         choices
                 );
             }
-        } catch (SQLException e) {
 
+        } catch (SQLException e) {
             System.out.println("SQL Exception:");
             System.out.println(e.getMessage());
-
         } finally {
             try {
-
-                if (con != null)
-                    con.close();
-
+                if (con != null) con.close();
             } catch (SQLException e) {
-
                 System.out.println("Could not close connection");
                 System.out.println(e.getMessage());
-
             }
         }
 

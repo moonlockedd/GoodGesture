@@ -19,7 +19,8 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public Question getQuestion(int id) {
+    public Question getQuestion(int id, String subject) {
+        Question question = null;
         Connection con = null;
 
         try {
@@ -27,17 +28,19 @@ public class QuestionRepository implements IQuestionRepository {
             con = db.getConnection();
 
             // List to store question choices
-            List<Choice> choices = choiceRepo.getChoices(id);
+            List<Choice> choices = choiceRepo.getChoices(id, subject);
 
             // Prepare sql statement and execute it
-            String sql = "SELECT question_text, explanation FROM questions WHERE id=?";
+            String sql = "SELECT question_text, explanation FROM questions " +
+                    "WHERE id=? AND subject=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, id);
+            st.setString(2, subject);
 
             ResultSet rs = st.executeQuery();
 
             if (rs.next() && choices != null) {
-                return new Question(
+                question = new Question(
                         rs.getString("question_text"),
                         rs.getString("explanation"),
                         choices
@@ -56,10 +59,28 @@ public class QuestionRepository implements IQuestionRepository {
             }
         }
 
-        return null;
+        return question;
     }
 
     @Override
-    public void printQuestion(Question question) {
+    public List<Question> getAllQuestions(String subject) {
+        Connection con = null;
+
+        try {
+            // Write here!!!
+
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: ");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Could not close connection: ");
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return null;
     }
 }

@@ -5,5 +5,5 @@ import models.Choice;
 import java.util.List;
 
 public interface IChoiceRepository {
-    List<Choice> getChoices(int id);
+    List<Choice> getChoices(int id, String subject);
 }

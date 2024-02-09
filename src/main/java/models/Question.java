@@ -3,32 +3,23 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestQuestion {
-    private int id;
+public class Question {
     // Text content of the question
     private String questionText;
     // Explanation of the answer
     private String explanation;
     // List to store answer variants
-    private List<AnswerVariant> answerVariants;
+    private List<Choice> choices;
 
-    public TestQuestion() {
-        this.answerVariants = new ArrayList<>();
+    // Allocate memory for choices
+    public Question() {
+        this.choices = new ArrayList<>();
     }
 
-    public TestQuestion(int id, String questionText, String explanation) {
+    public Question(String questionText, String explanation) {
         this();
-        this.id = id;
         this.questionText = questionText;
         this.explanation = explanation;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getQuestionText() {
@@ -48,13 +39,11 @@ public class TestQuestion {
     }
 
     // Add new variants to test question
-    public void addQuestionVariant(AnswerVariant answerVariant) {
-        this.answerVariants.add(answerVariant);
+    public void addQuestionVariant(Choice choice) {
+        this.choices.add(choice);
     }
 
     public String toString() {
-        return getId() + ". " +
-                "Question: " + getQuestionText() + "." +
-                "Explanation: " + getExplanation() + ".";
+        return getQuestionText();
     }
 }

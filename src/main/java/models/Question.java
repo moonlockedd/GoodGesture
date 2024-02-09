@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.Choice;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class Question {
         this.explanation = explanation;
     }
 
-    // Add new variants to test question
-    public void addQuestionVariant(Choice choice) {
+    // Add new choices to question
+    public void addChoice(Choice choice) {
         this.choices.add(choice);
     }
 

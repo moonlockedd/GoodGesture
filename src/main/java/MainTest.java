@@ -17,9 +17,9 @@ public class MainTest {
         QuestionRepository questionRepo = new QuestionRepository(db, choiceRepo);
 
         QuestionController questionController = new QuestionController(questionRepo);
-        List<Question> qs = questionController.getTypeQuestions("generic", "regular");
+        List<Question> qs = questionController.getTypeQuestions("mathematics", true);
 
         for (Question qn : qs)
-            System.out.println(qn);
+            System.out.println(qn.getExplanation());
     }
 }

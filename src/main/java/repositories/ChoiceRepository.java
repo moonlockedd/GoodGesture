@@ -17,7 +17,7 @@ public class ChoiceRepository implements IChoiceRepository {
     }
 
     @Override
-    public List<Choice> getChoices(int id) {
+    public List<Choice> getChoices(String subject, int id) {
         Connection con = null;
 
         try {
@@ -28,11 +28,11 @@ public class ChoiceRepository implements IChoiceRepository {
             List<Choice> choices = new ArrayList<>();
 
             // Prepare sql statement and execute it
-            String sql = "SELECT correct_choices, incorrect_choices FROM questions " +
-                    "WHERE id=?";
+            String sql = "SELECT correct_choices, incorrect_choices FROM " +
+                    subject + " WHERE id=?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, id);
 
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {

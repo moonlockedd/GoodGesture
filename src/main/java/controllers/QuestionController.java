@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.InvalidSubjectException;
 import models.Question;
 import repositories.QuestionRepository;
 import repositories.interfaces.IQuestionRepository;
@@ -14,31 +15,33 @@ public class QuestionController {
         this.questionRepo = questionRepo;
     }
 
-    public List<Question> getTypeQuestions(String subject, String type) {
-        // Get all questions of that subject and type
-        List<Question> allQuestions = questionRepo.getAllQuestions(subject, type);
+    public List<Question> getQuestions(String subject, boolean multi_answer) {
+        try {
+            // Get all questions of that subject and type
+            List<Question> allQuestions = questionRepo.getAllQuestions(subject, multi_answer);
 
-        // Shuffle questions
-        Collections.shuffle(allQuestions);
+            // Shuffle questions
+            Collections.shuffle(allQuestions);
 
-        // Return amount of questions that is appropriate for that type
-        if (type.equals("regular")) {
-            return allQuestions.subList(0, 30);
-        } else if (type.equals("multiple")) {
-            return allQuestions.subList(0, 10);
+            // Return amount of questions that is appropriate for that type
+            if (multi_answer) {
+                return allQuestions.subList(0, 30);
+            } else {
+                return allQuestions.subList(0, 10);
+            }
+        } catch (InvalidSubjectException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Null Pointer Exception: ");
+            System.out.println(e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Index Out Of Bounds Exception: ");
+            System.out.println("There are not enough questions");
         }
+
 
         return null;
     }
 
-    public List<String> getProfileSubjects() {
-        String[] subjectsArr = new String[]{
-                "Mathematics","Qazaq Lang","Russian Lang",
-                "Physics","Chemistry","Biology","German Lang",
-                "Geography","Russian Lang","World History",
-                "English Lang","French Lang","Law","Informatics"
-        };
 
-        return new ArrayList<>(Arrays.asList(subjectsArr));
-    }
 }

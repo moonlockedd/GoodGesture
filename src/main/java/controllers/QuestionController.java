@@ -1,33 +1,34 @@
 package controllers;
 
+import exceptions.InvalidChoiceException;
 import exceptions.InvalidSubjectException;
 import models.Question;
-import repositories.QuestionRepository;
 import repositories.interfaces.IQuestionRepository;
 
-import javax.security.auth.Subject;
 import java.util.*;
 
 public class QuestionController {
-    IQuestionRepository questionRepo;
+    private IQuestionRepository questionRepo;
+    private Scanner sc;
 
     public QuestionController(IQuestionRepository questionRepo) {
         this.questionRepo = questionRepo;
+        this.sc = new Scanner(System.in);
     }
 
-    public List<Question> getQuestions(String subject, boolean multi_answer) {
+    public List<Question> getSubjectQuestions(String subject, boolean multi_answer) {
         try {
             // Get all questions of that subject and type
-            List<Question> allQuestions = questionRepo.getAllQuestions(subject, multi_answer);
+            List<Question> allQuestions = questionRepo.getAllSubjectQuestions(subject, multi_answer);
 
             // Shuffle questions
             Collections.shuffle(allQuestions);
 
             // Return amount of questions that is appropriate for that type
             if (multi_answer) {
-                return allQuestions.subList(0, 30);
+                return allQuestions.subList(0, 5);
             } else {
-                return allQuestions.subList(0, 10);
+                return allQuestions.subList(0, 5);
             }
         } catch (InvalidSubjectException e) {
             System.out.println(e.getMessage());
@@ -39,9 +40,39 @@ public class QuestionController {
             System.out.println("There are not enough questions");
         }
 
-
         return null;
     }
 
+    public String getQuestionString(Question question) {
+        // Letters for each choice
+        char[] choiceLetters = new char[]{'a', 'b', 'c', 'd', 'e', 'f'};
 
+        // Get question text, append every choice to it and return it as a string
+        StringBuilder questionString = new StringBuilder(question.toString() + "\n\n");
+
+        for (int i = 0; i < question.getNumberOfChoices(); i++) {
+            questionString.append(choiceLetters[i]).append(") ").append(question.getChoice(i)).append("\n");
+        }
+
+        return questionString.toString();
+    }
+
+    public boolean checkAnswerValidity(Question question, String answer) throws InvalidChoiceException {
+        // Possible letters choices
+        String[] choiceLettersArr = new String[]{"a", "b", "c", "d", "e", "f"};
+        List<String> choiceLetters = Arrays.asList(choiceLettersArr);
+        choiceLetters = choiceLetters.subList(0, question.getNumberOfChoices());
+
+        if (!choiceLetters.contains(answer.toLowerCase())) {
+            throw new InvalidChoiceException("Invalid choice");
+        }
+
+        return true;
+    }
+
+    public boolean checkAnswer(Question question, String answer) {
+        char answerChar = answer.charAt(0);
+
+        return question.getChoice(answerChar - 'a').getCorrect();
+    }
 }

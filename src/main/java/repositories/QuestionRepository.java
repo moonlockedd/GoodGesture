@@ -72,7 +72,7 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public List<Question> getAllQuestions(String subject, boolean multi_answer) throws InvalidSubjectException {
+    public List<Question> getAllSubjectQuestions(String subject, boolean multi_answer) throws InvalidSubjectException {
         Connection con = null;
 
         try {
@@ -91,11 +91,15 @@ public class QuestionRepository implements IQuestionRepository {
             List<Question> questions = new ArrayList<>();
 
             // Prepare SQL statement and execute it
-            String sql = "SELECT id, question_text, explanation FROM " +
-                    subject + " WHERE multi_answer=?";
-            PreparedStatement st = con.prepareStatement(sql);
+            String sql;
+            if (!multi_answer)
+                sql = "SELECT id, question_text, explanation FROM " +
+                        subject + " WHERE ARRAY_LENGTH(correct_choices, 1)=1";
+            else
+                sql = "SELECT id, question_text, explanation FROM " +
+                        subject + " WHERE ARRAY_LENGTH(correct_choices, 1)>1";
 
-            st.setBoolean(1, multi_answer);
+            PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
             // Iterate through the result set
@@ -157,7 +161,7 @@ public class QuestionRepository implements IQuestionRepository {
 
             return subjects;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("SQL Exception: ");
             System.out.println(e.getMessage());
         } finally {

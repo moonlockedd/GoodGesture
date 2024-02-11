@@ -2,7 +2,6 @@ import controllers.QuestionController;
 import data.PostgresDB;
 import data.interfaces.IDB;
 import exceptions.InvalidChoiceException;
-import models.Choice;
 import models.Question;
 import repositories.*;
 
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainTest {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         // FOR TESTING PURPOSES
         Scanner sc = new Scanner(System.in);
@@ -42,5 +41,5 @@ public class MainTest {
         }
 
         System.out.println(correctQuestions);
-    }
+    }*/
 }

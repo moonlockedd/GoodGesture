@@ -9,11 +9,9 @@ import java.util.*;
 
 public class QuestionController {
     private IQuestionRepository questionRepo;
-    private Scanner sc;
 
     public QuestionController(IQuestionRepository questionRepo) {
         this.questionRepo = questionRepo;
-        this.sc = new Scanner(System.in);
     }
 
     public List<Question> getSubjectQuestions(String subject, boolean multi_answer) {
@@ -63,9 +61,8 @@ public class QuestionController {
         List<String> choiceLetters = Arrays.asList(choiceLettersArr);
         choiceLetters = choiceLetters.subList(0, question.getNumberOfChoices());
 
-        if (!choiceLetters.contains(answer.toLowerCase())) {
+        if (!choiceLetters.contains(answer.toLowerCase()))
             throw new InvalidChoiceException("Invalid choice");
-        }
 
         return true;
     }
@@ -74,5 +71,19 @@ public class QuestionController {
         char answerChar = answer.charAt(0);
 
         return question.getChoice(answerChar - 'a').getCorrect();
+    }
+
+    public List<String> getSubjectNames() {
+        List<String> subjectNames = questionRepo.getSubjectNames(true);
+        subjectNames.addAll(questionRepo.getSubjectNames(false));
+
+        return subjectNames;
+    }
+
+    public List<String> getSubjectTableNames() {
+        List<String> subjects = getSubjectNames();
+        questionRepo.convertToTableNames(subjects);
+
+        return subjects;
     }
 }

@@ -15,7 +15,7 @@ public class QuestionRepository implements IQuestionRepository {
     private final IDB db;
     private final IChoiceRepository choiceRepo;
 
-    public QuestionRepository(IDB db, ChoiceRepository choiceRepo) {
+    public QuestionRepository(IDB db, IChoiceRepository choiceRepo) {
         this.db = db;
         this.choiceRepo = choiceRepo;
     }
@@ -27,8 +27,9 @@ public class QuestionRepository implements IQuestionRepository {
 
         try {
             // Check if a subject is valid
-            List<String> subjects = getSubjectTableNames(true);
-            subjects.addAll(getSubjectTableNames(false));
+            List<String> subjects = getSubjectNames(true);
+            subjects.addAll(getSubjectNames(false));
+            convertToTableNames(subjects);
 
             if (!subjects.contains(subject)) {
                 throw new InvalidSubjectException("Invalid subject");
@@ -77,8 +78,9 @@ public class QuestionRepository implements IQuestionRepository {
 
         try {
             // Check if a subject is valid
-            List<String> subjects = getSubjectTableNames(true);
-            subjects.addAll(getSubjectTableNames(false));
+            List<String> subjects = getSubjectNames(true);
+            subjects.addAll(getSubjectNames(false));
+            convertToTableNames(subjects);
 
             if (!subjects.contains(subject)) {
                 throw new InvalidSubjectException("Invalid subject");
@@ -136,7 +138,7 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public List<String> getSubjectTableNames(boolean elective) {
+    public List<String> getSubjectNames(boolean elective) {
         Connection con = null;
 
         // Get all elective or mandatory subject table names
@@ -151,7 +153,7 @@ public class QuestionRepository implements IQuestionRepository {
             st.setBoolean(1, elective);
             ResultSet rs = st.executeQuery();
 
-            // List to store subject table names
+            // List to store subject names
             List<String> subjects = new ArrayList<>();
 
             // Iterate through result set
@@ -174,5 +176,13 @@ public class QuestionRepository implements IQuestionRepository {
         }
 
         return null;
+    }
+
+    public void convertToTableNames(List<String> subjects) {
+        // Convert subject names into table names
+        for (int i = 0; i < subjects.size(); i++) {
+            subjects.set(i, subjects.get(i).toLowerCase());
+            subjects.set(i, subjects.get(i).replaceAll(" ", "_"));
+        }
     }
 }

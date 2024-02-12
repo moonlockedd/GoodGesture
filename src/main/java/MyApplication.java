@@ -32,9 +32,10 @@ public class MyApplication {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Input must be an integer");
-                scanner.nextLine(); // to ignore incorrect input
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+            } finally {
+                scanner.nextLine(); // to ignore incorrect input
             }
 
             System.out.println("------------------------------------------------");
@@ -44,6 +45,7 @@ public class MyApplication {
     public void chooseSubjectMenu() {
         List<String> subjectNames = questionController.getSubjectNames();
 
+        System.out.println("------------------------------------------------");
         for (int i = 0; i < subjectNames.size(); i++) {
             System.out.println((i + 1) + ". " + subjectNames.get(i));
         }
@@ -61,7 +63,10 @@ public class MyApplication {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Input must be an integer");
+            } finally {
+                scanner.nextLine(); // to ignore incorrect input
             }
+
         }
 
         if (option != 0) {

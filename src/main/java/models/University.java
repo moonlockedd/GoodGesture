@@ -14,11 +14,10 @@ public class University{
 
     @Override
     public String toString() {
-        return "University{" +
-                "id=" + id +
-                ", universityName='" + universityName + '\'' +
-                ", programs=" + programs +
-                '}';
+        return "University:" +
+                "id=" + getId() +
+                "universityName='" + getUniversityName() +
+                "programs=" + getPrograms();
     }
 
 }

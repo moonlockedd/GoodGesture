@@ -17,13 +17,13 @@ public class Program {
 
    @Override
     public String toString(){
-       return "Program{"+
-               "id=" + id +
-               ", name='" + programName + '\'' +
-               ", electedSubjectNames=" + Arrays.toString(electedSubjectNames) +
-               ", university name='" + universityName + '\'' +
-               ", minimum score=" + minScore +
-               '}';
+       return "Program:"+
+               "id=" + getId() +
+               "name='" + getProgramName() +
+               "electedSubjectNames=" + Arrays.toString(getElectedSubjectNames()) +
+               "university name='" + getUniversityName() +
+               "minimum score=" + getMinScore();
+
    }
 
 }

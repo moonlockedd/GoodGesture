@@ -1,28 +1,27 @@
 package models;
 //import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
 
+@AllArgsConstructor
+@Getter @Setter
 public class Program {
-    @Getter @Setter private int id;
-    @Getter @Setter String programName;
-    @Getter @Setter String uniName;
-    @Getter @Setter int minScore;
-
-   public Program(int id, String programName, String uniName, int minScore){
-       this.id = id;
-       this.programName= programName;
-       this.uniName= uniName;
-       this.minScore = minScore;
-   }
+    private int id;
+    private String programName;
+    private String universityName;
+    private int minScore;
+    private String[] electedSubjectNames;
 
    @Override
     public String toString(){
        return "Program{"+
                "id=" + id +
                ", name='" + programName + '\'' +
-               ", university name='" + uniName + '\'' +
+               ", electedSubjectNames=" + Arrays.toString(electedSubjectNames) +
+               ", university name='" + universityName + '\'' +
                ", minimum score=" + minScore +
                '}';
    }

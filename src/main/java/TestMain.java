@@ -26,7 +26,6 @@ public class TestMain {
         Program p1 = new Program(
                 1,
                 "Software Engineering",
-                "Astana IT University",
                 85,
                 new String[]{"Info","Math"}
         );
@@ -34,7 +33,6 @@ public class TestMain {
         Program p2 = new Program(
                 2,
                 "Big Data Analysis",
-                "Astana IT University",
                 85,
                 new String[]{"Info","Math"}
         );

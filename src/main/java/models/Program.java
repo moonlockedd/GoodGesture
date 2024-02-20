@@ -8,7 +8,6 @@ import lombok.Setter;
 public final class Program {
     private int id;
     private String programName;
-    private String universityName;
     private int minScore;
     private String[] electedSubjectNames;
 

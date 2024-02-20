@@ -9,10 +9,18 @@ public final class University{
     @Getter @Setter
     private int id;
     @Getter @Setter
-    private String universityName;
+    private String name;
     private List<Program> programs;
 
-    public String getAllProgramsString() {
+    public Program getProgram(int index) {
+        return programs.get(index);
+    }
+
+    public int getNumberOfPrograms() {
+        return programs.size();
+    }
+
+    private String getAllProgramsString() {
         StringBuilder programsString = new StringBuilder();
         for (Program p : programs) {
             programsString.append(p).append("\n");
@@ -23,8 +31,8 @@ public final class University{
 
     @Override
     public String toString() {
-        return "University #" + getId() + ":" +
-                getUniversityName() + "\n" +
+        return "University #" + getId() + ":\n" +
+                getName() + "\n" +
                 "Available programs:" + "\n" +
                 getAllProgramsString();
     }

@@ -20,22 +20,12 @@ public class User {
     private String phoneNumber;
     private List<Subject> subjects;
 
-    public int getTotalScore() {
-        int totalScore = 0;
-
-        for (Subject subject : subjects) {
-            totalScore += subject.getScore();
-        }
-
-        return totalScore;
+    public Subject getSubject(int index) {
+        return subjects.get(index);
     }
 
-    public String[] getElectedSubjectNames() {
-        String[] electedSubjectNames = new String[2];
-        electedSubjectNames[0] = subjects.get(3).getName();
-        electedSubjectNames[1] = subjects.get(4).getName();
-
-        return electedSubjectNames;
+    public int getNumberOfSubjects() {
+        return subjects.size();
     }
 
     @Override
@@ -43,9 +33,8 @@ public class User {
         return "User #" + getId() + ":\n" +
                 getName() + " " +
                 getSurname() + "\n" +
-                "Total score: " + getTotalScore() + "\n" +
                 "Elected subjects: " +
-                getElectedSubjectNames()[0] + ", " +
-                getElectedSubjectNames()[1];
+                getSubject(3).getName() + " " +
+                getSubject(4).getName();
     }
 }

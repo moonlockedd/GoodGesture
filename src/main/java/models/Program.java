@@ -1,14 +1,11 @@
 package models;
-//import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
-
 @AllArgsConstructor
 @Getter @Setter
-public class Program {
+public final class Program {
     private int id;
     private String programName;
     private String universityName;
@@ -17,13 +14,12 @@ public class Program {
 
    @Override
     public String toString(){
-       return "Program:"+
-               "id=" + getId() +
-               "name='" + getProgramName() +
-               "electedSubjectNames=" + Arrays.toString(getElectedSubjectNames()) +
-               "university name='" + getUniversityName() +
-               "minimum score=" + getMinScore();
-
+       return "Program #" + getId() + ":\n" +
+               getProgramName() + "\n" +
+               "Elected subjects: " +
+               getElectedSubjectNames()[0] + ", " +
+               getElectedSubjectNames()[1] + "\n" +
+               "Minimum score: " + getMinScore();
    }
 
 }

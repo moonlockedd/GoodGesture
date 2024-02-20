@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Setter @Getter @AllArgsConstructor
-public class Subject {
+public final class Subject {
     private String name;
     private int score;
 

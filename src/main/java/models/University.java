@@ -5,24 +5,15 @@ import lombok.Setter;
 import java.util.List;
 
 @AllArgsConstructor
+@Getter @Setter
 public final class University{
-    @Getter @Setter
     private int id;
-    @Getter @Setter
     private String name;
     private List<Program> programs;
 
-    public Program getProgram(int index) {
-        return programs.get(index);
-    }
-
-    public int getNumberOfPrograms() {
-        return programs.size();
-    }
-
     private String getAllProgramsString() {
         StringBuilder programsString = new StringBuilder();
-        for (Program p : programs) {
+        for (Program p : getPrograms()) {
             programsString.append(p).append("\n");
         }
 

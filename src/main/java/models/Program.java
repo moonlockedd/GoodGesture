@@ -11,7 +11,13 @@ public final class Program {
     private int minScore;
     private String[] electedSubjectNames;
 
-   @Override
+    public Program(String programName, int minScore, String[] electedSubjectNames) {
+        this.programName = programName;
+        this.minScore = minScore;
+        this.electedSubjectNames = electedSubjectNames;
+    }
+
+    @Override
     public String toString(){
        return "Program #" + getId() + ":\n" +
                getProgramName() + "\n" +

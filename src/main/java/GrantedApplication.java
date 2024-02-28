@@ -17,6 +17,8 @@ public class GrantedApplication {
         while (true) {
             System.out.println(MENU_LINE);
             System.out.println("Welcome to GrantEd Application");
+            System.out.println(MENU_LINE);
+
             System.out.println("Select option: ");
             System.out.println("1. Subject Score Menu");
             System.out.println("2. User Menu");
@@ -43,8 +45,9 @@ public class GrantedApplication {
     public void subjectScoreMenu() {
         while (true) {
             System.out.println(MENU_LINE);
-
             System.out.println("Subject Score Menu");
+            System.out.println(MENU_LINE);
+
             System.out.println("Select option: ");
             System.out.println("1. Get All Subject Scores");
             System.out.println("2. Get Subject Score By ID");
@@ -95,9 +98,11 @@ public class GrantedApplication {
     public void createSubjectScoreMenu() {
         try {
             System.out.println(MENU_LINE);
+            // To ignore whitespace from previous input
+            scanner.nextLine();
 
             System.out.println("Enter subject name: ");
-            String subject = scanner.next();
+            String subject = scanner.nextLine();
 
             System.out.println("Enter subject score: ");
             int score = scanner.nextInt();

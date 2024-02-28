@@ -43,7 +43,7 @@ public class SubjectScoreController {
 
         // Return appropriate response
         if (createdSubjectScore != null)
-            return "Created Subject Score\n" + createdSubjectScore.toString();
+            return "Created Subject Score\n" + createdSubjectScore;
         return "Failed to create Subject Score";
     }
 }

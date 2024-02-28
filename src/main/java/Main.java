@@ -6,7 +6,7 @@ import repositories.interfaces.ISubjectScoreRepository;
 import services.SubjectScoreService;
 import services.interfaces.ISubjectScoreService;
 
-public class TestMain {
+public class Main {
     public static void main(String[] args) {
         IDataBase db = new PostgresDB();
         ISubjectScoreRepository subjectRepo = new SubjectScoreRepository(db);

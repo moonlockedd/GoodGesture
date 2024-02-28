@@ -13,6 +13,9 @@ public class SubjectScoreController {
     public String getAll() {
         // Get all SubjectScores
         List<SubjectScore> subjectScores = subjectScoreService.getAll();
+        if (subjectScores.isEmpty())
+            return "No Subject Scores found";
+
         StringBuilder response = new StringBuilder();
 
         // Append all SubjectScore string representations to response
@@ -34,13 +37,13 @@ public class SubjectScoreController {
     }
 
     public String create(String subject, int score) {
-        // Instantiate new SubjectScore
+        // Instantiate new SubjectScore and pass it to create method
         SubjectScore subjectScore = new SubjectScore(subject, score);
+        SubjectScore createdSubjectScore = subjectScoreService.create(subjectScore);
 
         // Return appropriate response
-        boolean created = subjectScoreService.create(subjectScore);
-        if (created)
-            return "Created Subject Score";
+        if (createdSubjectScore != null)
+            return "Created Subject Score\n" + createdSubjectScore.toString();
         return "Failed to create Subject Score";
     }
 }

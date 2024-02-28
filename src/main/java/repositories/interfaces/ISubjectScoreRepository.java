@@ -8,4 +8,5 @@ public interface ISubjectScoreRepository {
     List<SubjectScore> getAll();
     SubjectScore getById(int id);
     boolean create(SubjectScore subjectScore);
+    SubjectScore getLastCreated();
 }

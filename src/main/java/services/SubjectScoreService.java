@@ -22,7 +22,12 @@ public class SubjectScoreService implements ISubjectScoreService {
     }
 
     @Override
-    public boolean create(SubjectScore subjectScore) {
-        return subjectScoreRepo.create(subjectScore);
+    public SubjectScore create(SubjectScore subjectScore) {
+        boolean created = subjectScoreRepo.create(subjectScore);
+
+        if (created) {
+            return subjectScoreRepo.getLastCreated();
+        }
+        return null;
     }
 }

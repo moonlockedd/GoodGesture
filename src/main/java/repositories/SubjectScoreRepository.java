@@ -128,4 +128,44 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
 
         return false;
     }
+
+    @Override
+    public SubjectScore getLastCreated() {
+        Connection con = null;
+
+        try {
+            // Establish connection
+            con = db.getConnection();
+
+            // Create statement and execute it
+            String query = "SELECT id, subject, score FROM subject_scores " +
+                    "ORDER BY id DESC LIMIT 1";
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            // If table is not empty, return SubjectScore
+            if (rs.next()) {
+                return new SubjectScore(
+                        rs.getInt("id"),
+                        rs.getString("subject"),
+                        rs.getInt("score")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Try closing the connection
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        // Return null if table is empty or if exception is thrown
+        return null;
+    }
 }

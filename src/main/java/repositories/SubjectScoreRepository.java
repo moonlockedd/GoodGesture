@@ -3,18 +3,18 @@ package repositories;
 import data.interfaces.IDataBase;
 import lombok.AllArgsConstructor;
 import models.SubjectScore;
-import repositories.interfaces.ISubjectRepository;
+import repositories.interfaces.ISubjectScoreRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class SubjectRepository implements ISubjectRepository {
+public class SubjectScoreRepository implements ISubjectScoreRepository {
     private final IDataBase db;
 
     @Override
-    public List<SubjectScore> getAllSubjectScores() {
+    public List<SubjectScore> getAll() {
         Connection con = null;
         List<SubjectScore> subjectScores = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class SubjectRepository implements ISubjectRepository {
     }
 
     @Override
-    public SubjectScore getSubjectScoreById(int id) {
+    public SubjectScore getById(int id) {
         Connection con = null;
 
         try {
@@ -88,7 +88,7 @@ public class SubjectRepository implements ISubjectRepository {
     }
 
     @Override
-    public boolean createSubjectScore(SubjectScore subjectScore) {
+    public boolean create(SubjectScore subjectScore) {
         Connection con = null;
 
         try {

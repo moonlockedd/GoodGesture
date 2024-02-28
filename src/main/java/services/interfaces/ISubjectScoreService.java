@@ -7,5 +7,5 @@ import java.util.List;
 public interface ISubjectScoreService {
     List<SubjectScore> getAll();
     SubjectScore getById(int id);
-    String create(SubjectScore subjectScore);
+    boolean create(SubjectScore subjectScore);
 }

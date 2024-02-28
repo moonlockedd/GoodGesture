@@ -11,7 +11,7 @@ public class TestMain {
         IDataBase db = new PostgresDB();
         ISubjectScoreRepository subjectRepo = new SubjectScoreRepository(db);
 
-        List<SubjectScore> subjectScores = subjectRepo.getAllSubjectScores();
+        List<SubjectScore> subjectScores = subjectRepo.getAll();
 
         for (SubjectScore subjectScore : subjectScores) {
             System.out.println(subjectScore);

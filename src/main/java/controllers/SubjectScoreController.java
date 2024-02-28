@@ -2,7 +2,6 @@ package controllers;
 
 import lombok.AllArgsConstructor;
 import models.SubjectScore;
-import services.SubjectScoreService;
 import services.interfaces.ISubjectScoreService;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class SubjectScoreController {
 
         // If SubjectScore does not exist, return appropriate response
         if (subjectScore == null)
-            return "SubjectScore was not found";
+            return "Subject Score was not found";
         return subjectScore.toString();
     }
 
@@ -41,7 +40,7 @@ public class SubjectScoreController {
         // Return appropriate response
         boolean created = subjectScoreService.create(subjectScore);
         if (created)
-            return "Created SubjectScore";
-        return "Failed to create SubjectScore";
+            return "Created Subject Score";
+        return "Failed to create Subject Score";
     }
 }

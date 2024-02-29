@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProgramRepository implements IProgramRepository {
     private final IDataBase db;
+
     @Override
     public List<Program> getAll() {
         Connection con = null;
@@ -27,12 +28,15 @@ public class ProgramRepository implements IProgramRepository {
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                Program program = new Program(
+                Array sqlArr = rs.getArray("electives");
+                String[] electivesArr = (String[]) sqlArr.getArray();
+
+                programs.add(new Program(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getInt("minimum_score"),
-                        new String[]{rs.getString("electives")});
-                programs.add(program);
+                        electivesArr
+                ));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -55,18 +59,21 @@ public class ProgramRepository implements IProgramRepository {
         try {
             con = db.getConnection();
 
-            String query = "SELECT id, name, electives, minimum_score FROM programm WHERE id=?";
+            String query = "SELECT id, name, electives, minimum_score FROM programs WHERE id=?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                Array sqlArr = rs.getArray("electives");
+                String[] electivesArr = (String[]) sqlArr.getArray();
+
                 return new Program(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getInt("minimum_score"),
-                        new String[]{rs.getString("electives")}
+                        electivesArr
                 );
             }
         } catch (SQLException e) {
@@ -90,10 +97,14 @@ public class ProgramRepository implements IProgramRepository {
 
         try {
             con = db.getConnection();
-            String query = "INSERT INTO programm (name, electives, minimum_score) VALUES(?,?,?)";
+
+            String query = "INSERT INTO programs (name, electives, minimum_score) VALUES(?,?,?)";
             PreparedStatement stmt = con.prepareStatement(query);
+
+            Array sqlArr = con.createArrayOf("character varying", program.getElectedSubjectNames());
+
             stmt.setString(1, program.getName());
-            stmt.setString(2, Arrays.toString(program.getElectedSubjectNames()));
+            stmt.setArray(2, sqlArr);
             stmt.setInt(3, program.getMinimumScore());
 
             stmt.execute();
@@ -120,17 +131,20 @@ public class ProgramRepository implements IProgramRepository {
 
         try {
             con = db.getConnection();
-            String query = "SELECT id, name, electives, minimum_score FROM programm ORDER BY id DESC LIMIT 1";
+            String query = "SELECT id, name, electives, minimum_score FROM programs ORDER BY id DESC LIMIT 1";
             Statement stmt = con.createStatement();
 
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
+                Array sqlArr = rs.getArray("electives");
+                String[] electivesArr = (String[]) sqlArr.getArray();
+
                 return new Program(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getInt("minimum_score"),
-                        new String[]{rs.getString("electives")}
+                        electivesArr
                 );
             }
         } catch (SQLException e) {

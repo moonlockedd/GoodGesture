@@ -26,5 +26,4 @@ public final class Program {
                getElectedSubjectNames()[1] + "\n" +
                "Minimum score: " + getMinimumScore();
    }
-
 }

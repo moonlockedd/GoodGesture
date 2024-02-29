@@ -17,7 +17,7 @@ public class ProgramController {
 
         StringBuilder response = new StringBuilder();
         for (Program program : programs) {
-            response.append(program.toString()).append("\n");
+            response.append(program.toString()).append("\n\n");
         }
 
         return response.toString();
@@ -25,17 +25,17 @@ public class ProgramController {
 
     public String getById(int id) {
         Program program = programService.getById(id);
+
         if (program == null)
             return "Program was not found";
+
         return program.toString();
     }
 
-    public String create(int id, String name, int min, String[] electives) {
-        // Instantiate new Program and pass it to create method
-        Program program = new Program(id, name, min, electives);
+    public String create(String name, int min, String[] electives) {
+        Program program = new Program(name, min, electives);
         Program createdProgram = programService.create(program);
 
-        // Check if the create method returned a Program object
         if (createdProgram != null)
             return "Created Program\n" + createdProgram.toString();
         return "Failed to create Program";

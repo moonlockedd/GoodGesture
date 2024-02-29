@@ -8,15 +8,18 @@ import java.util.Scanner;
 public class GrantedApplication {
     private final SubjectScoreController subjectScoreController;
     private final UserController userController;
+    private final ProgramController programController;
     private final Scanner scanner;
     private static final String MENU_LINE = "*****************************************";
 
     public GrantedApplication(
             SubjectScoreController subjectScoreController,
-            UserController userController
+            UserController userController,
+            ProgramController programController
     ) {
         this.subjectScoreController = subjectScoreController;
         this.userController = userController;
+        this.programController = programController;
         this.scanner = new Scanner(System.in);
     }
 
@@ -41,6 +44,8 @@ public class GrantedApplication {
                     subjectScoreMenu();
                 } else if (option == 2) {
                     userMenu();
+                } else if (option == 3) {
+                    programMenu();
                 } else if (option == 0) {
                     break;
                 }
@@ -226,6 +231,88 @@ public class GrantedApplication {
                             email, password,
                             subjects, scores
                     ) + "\n");
+        } catch (InputMismatchException e) {
+            System.out.println("Incorrect input");
+            scanner.nextLine(); // to ignore incorrect input
+        }
+    }
+
+    public void programMenu() {
+        while (true) {
+            System.out.println(MENU_LINE);
+            System.out.println("Program Menu");
+            System.out.println(MENU_LINE);
+
+            System.out.println("Select option: ");
+            System.out.println("1. Get All Programs");
+            System.out.println("2. Get Program By ID");
+            System.out.println("3. Create Program");
+            System.out.println("0. Go back");
+
+            try {
+                System.out.println("Enter option 1-3: ");
+                int option = scanner.nextInt();
+
+                if (option == 1) {
+                    getAllProgramsMenu();
+                } else if (option == 2) {
+                    getProgramByIdMenu();
+                } else if (option == 3) {
+                    createProgramMenu();
+                } else if (option == 0) {
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input must be an integer");
+                scanner.nextLine(); // to ignore incorrect input
+            }
+        }
+    }
+
+    public void getAllProgramsMenu() {
+        System.out.println(MENU_LINE);
+        System.out.println("All Programs\n");
+
+        System.out.println(programController.getAll());
+    }
+
+    public void getProgramByIdMenu() {
+        try {
+            System.out.println(MENU_LINE);
+
+            System.out.println("Enter id: ");
+
+            int id = scanner.nextInt();
+            System.out.println("\n" + programController.getById(id) + "\n");
+        } catch (InputMismatchException e) {
+            System.out.println("Input must be integer");
+            scanner.nextLine(); // to ignore incorrect input
+        }
+    }
+
+    public void createProgramMenu() {
+        try {
+            scanner.nextLine();
+            System.out.println(MENU_LINE);
+
+            System.out.println("Enter program name: ");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter program minimum passing score: ");
+            int minimumScore = scanner.nextInt();
+            scanner.nextLine();
+
+            String[] electiveSubjectNames = new String[2];
+
+            System.out.println("Enter first elective subject name: ");
+            electiveSubjectNames[0] = scanner.nextLine();
+
+            System.out.println("Enter second elective subject name: ");
+            electiveSubjectNames[1] = scanner.nextLine();
+
+            System.out.println("\n" + programController.create(
+                    name, minimumScore, electiveSubjectNames
+            ) + "\n");
         } catch (InputMismatchException e) {
             System.out.println("Incorrect input");
             scanner.nextLine(); // to ignore incorrect input

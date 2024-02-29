@@ -5,6 +5,7 @@ import models.SubjectScore;
 import models.User;
 import services.interfaces.IUserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class UserController {
         StringBuilder response = new StringBuilder();
 
         for (User user : users) {
-            response.append(user.toString()).append("\n");
+            response.append(user.toString()).append("\n\n");
         }
 
         return response.toString();
@@ -38,8 +39,16 @@ public class UserController {
     public String create(
             String firstName, String lastName,
             String email, String password,
-            List<SubjectScore> subjectScores
+            String[] subjects, int[] scores
     ) {
+        List<SubjectScore> subjectScores = new ArrayList<>();
+
+        for (int i = 0; i < subjects.length; i++) {
+            subjectScores.add(new SubjectScore(
+               subjects[i], scores[i]
+            ));
+        }
+
         User user = new User(firstName, lastName, email, password, subjectScores);
 
         User createdUser = userService.create(user);

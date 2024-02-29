@@ -116,7 +116,7 @@ public class GrantedApplication {
             System.out.println("Enter subject score: ");
             int score = scanner.nextInt();
 
-            System.out.println("\n" + subjectScoreController.create(subject, score));
+            System.out.println("\n" + subjectScoreController.create(subject, score) + "\n");
         } catch (InputMismatchException e) {
             System.out.println("Subject name must be string");
             System.out.println("Score must be integer");
@@ -178,6 +178,57 @@ public class GrantedApplication {
     }
 
     public void createUserMenu() {
+        try {
+            System.out.println(MENU_LINE);
+            // To ignore whitespace from previous input
+            scanner.nextLine();
 
+            System.out.println("Enter first name: ");
+            String firstName = scanner.nextLine();
+
+            System.out.println("Enter last name: ");
+            String lastName = scanner.nextLine();
+
+            System.out.println("Enter email: ");
+            String email = scanner.nextLine();
+
+            System.out.println("Enter password: ");
+            String password = scanner.nextLine();
+
+            String[] subjects = new String[5];
+            int[] scores = new int[5];
+
+            for (int i = 0; i < 3; i++) {
+                System.out.println("Mandatory Subject #" + (i + 1));
+
+                System.out.println("Enter subject name: ");
+                subjects[i] = scanner.nextLine();
+
+                System.out.println("Enter subject score: ");
+                scores[i] = scanner.nextInt();
+                scanner.nextLine();
+            }
+
+            for (int i = 0; i < 2; i++) {
+                System.out.println("Elective Subject #" + (i + 1));
+
+                System.out.println("Enter subject name: ");
+                subjects[i + 3] = scanner.nextLine();
+
+                System.out.println("Enter subject score: ");
+                scores[i + 3] = scanner.nextInt();
+                scanner.nextLine();
+            }
+
+            System.out.println(
+                    "\n" + userController.create(
+                            firstName, lastName,
+                            email, password,
+                            subjects, scores
+                    ) + "\n");
+        } catch (InputMismatchException e) {
+            System.out.println("Incorrect input");
+            scanner.nextLine(); // to ignore incorrect input
+        }
     }
 }

@@ -35,8 +35,8 @@ public class User {
                 getLastName() + "\n" +
                 getEmail() + "\n" +
                 getPassword() + "\n" +
-                "Elected subjects: " +
-                getSubjectScores().get(3).getSubject() + " " +
+                "Elected subjects:\n" +
+                getSubjectScores().get(3).getSubject() + ", " +
                 getSubjectScores().get(4).getSubject();
     }
 }

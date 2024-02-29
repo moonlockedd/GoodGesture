@@ -20,7 +20,7 @@ public class SubjectScoreController {
 
         // Append all SubjectScore string representations to response
         for (SubjectScore subjectScore : subjectScores) {
-            response.append(subjectScore.toString()).append("\n");
+            response.append(subjectScore.toString()).append("\n\n");
         }
 
         return response.toString();

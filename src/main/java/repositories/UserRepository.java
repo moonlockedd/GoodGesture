@@ -180,9 +180,22 @@ public class UserRepository implements IUserRepository {
                     "VALUES(?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(query);
 
+            List<SubjectScore> subjectScores = new ArrayList<>();
+            for (SubjectScore subjectScore : user.getSubjectScores()) {
+                boolean created = subjectScoreRepo.create(subjectScore);
+
+                if (created) {
+                    subjectScores.add(subjectScoreRepo.getLastCreated());
+                }
+            }
+
+            if (subjectScores.size() != 5) {
+                throw new InvalidNumberOfSubjectsException("Number of subjects must be 5");
+            }
+
             Integer[] idArr = new Integer[5];
             for (int i = 0; i < user.getSubjectScores().size(); i++) {
-                idArr[i] = user.getSubjectScores().get(i).getId();
+                idArr[i] = subjectScores.get(i).getId();
             }
             Array sqlArr = con.createArrayOf("integer", idArr);
 
@@ -196,6 +209,8 @@ public class UserRepository implements IUserRepository {
 
             return true;
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (InvalidNumberOfSubjectsException e) {
             System.out.println(e.getMessage());
         } finally {
             if (con != null) {

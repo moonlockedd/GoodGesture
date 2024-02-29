@@ -97,6 +97,46 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
     }
 
     @Override
+    public List<SubjectScore> getAllByIds(Integer[] ids) {
+        Connection con = null;
+        List<SubjectScore> subjectScores = new ArrayList<>();
+
+        try {
+            con = db.getConnection();
+
+            for (Integer id : ids) {
+                String query = "SELECT id,subject,score FROM subject_scores WHERE id=?";
+                PreparedStatement stmt = con.prepareStatement(query);
+
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    subjectScores.add(new SubjectScore(
+                            rs.getInt("id"),
+                            rs.getString("subject"),
+                            rs.getInt("score")
+                    ));
+                }
+            }
+
+            if (subjectScores.size() == 5)
+                return subjectScores;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean create(SubjectScore subjectScore) {
         Connection con = null;
 

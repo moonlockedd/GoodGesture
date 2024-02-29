@@ -18,6 +18,7 @@ public final class SubjectScore {
 
     @Override
     public String toString() {
-        return getId() + ": " + getSubject() + " - " + getScore();
+        return "Subject Score #" + getId() + ":\n" +
+                getSubject() + " - " + getScore();
     }
 }

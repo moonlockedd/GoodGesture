@@ -107,6 +107,7 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
             for (Integer id : ids) {
                 String query = "SELECT id,subject,score FROM subject_scores WHERE id=?";
                 PreparedStatement stmt = con.prepareStatement(query);
+                stmt.setInt(1, id);
 
                 ResultSet rs = stmt.executeQuery();
 

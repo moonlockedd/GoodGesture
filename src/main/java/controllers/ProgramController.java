@@ -32,7 +32,7 @@ public class ProgramController {
 
     public String create(int id, String name, int min, String[] electives) {
         // Instantiate new Program and pass it to create method
-        Program program = new Program(id, name, min, elec);
+        Program program = new Program(id, name, min, electives);
         Program createdProgram = programService.create(program);
 
         // Check if the create method returned a Program object

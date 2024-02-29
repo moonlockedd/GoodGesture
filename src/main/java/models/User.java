@@ -33,6 +33,8 @@ public class User {
         return "User #" + getId() + ":\n" +
                 getFirstName() + " " +
                 getLastName() + "\n" +
+                getEmail() + "\n" +
+                getPassword() + "\n" +
                 "Elected subjects: " +
                 getSubjectScores().get(3).getSubject() + " " +
                 getSubjectScores().get(4).getSubject();

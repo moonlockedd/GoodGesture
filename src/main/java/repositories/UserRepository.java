@@ -76,6 +76,7 @@ public class UserRepository implements IUserRepository {
             String query = "SELECT id,first_name,last_name,email,password," +
                     "subject_score_ids FROM users WHERE id=?";
             PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
 

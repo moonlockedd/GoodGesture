@@ -13,7 +13,7 @@ public class ProgramController {
     public String getAll() {
         List<Program> programs = programService.getAll();
         if (programs.isEmpty())
-            return "No Programs found";
+            return "No Programs were found";
 
         StringBuilder response = new StringBuilder();
         for (Program program : programs) {
@@ -37,7 +37,7 @@ public class ProgramController {
         Program createdProgram = programService.create(program);
 
         if (createdProgram != null)
-            return "Created Program\n" + createdProgram.toString();
+            return "Created Program\n" + createdProgram;
         return "Failed to create Program";
     }
 }

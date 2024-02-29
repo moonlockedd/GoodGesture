@@ -3,11 +3,11 @@ package repositories;
 import data.interfaces.IDataBase;
 import lombok.AllArgsConstructor;
 import models.Program;
+import models.SubjectScore;
 import repositories.interfaces.IProgramRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -76,6 +76,50 @@ public class ProgramRepository implements IProgramRepository {
                         electivesArr
                 );
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Program> getAllByIds(Integer[] ids) {
+        Connection con = null;
+        List<Program> programs = new ArrayList<>();
+
+        try {
+            con = db.getConnection();
+
+            for (Integer id : ids) {
+                String query = "SELECT id,name,electives,minimum_score " +
+                        "FROM programs WHERE id=?";
+                PreparedStatement stmt = con.prepareStatement(query);
+                stmt.setInt(1, id);
+
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    Array sqlArr = rs.getArray("electives");
+                    String[] electivesArr = (String[]) sqlArr.getArray();
+
+                    programs.add(new Program(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("minimum_score"),
+                            electivesArr
+                    ));
+                }
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {

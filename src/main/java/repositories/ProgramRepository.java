@@ -3,7 +3,6 @@ package repositories;
 import data.interfaces.IDataBase;
 import lombok.AllArgsConstructor;
 import models.Program;
-import models.SubjectScore;
 import repositories.interfaces.IProgramRepository;
 
 import java.sql.*;

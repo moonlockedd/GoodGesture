@@ -1,5 +1,6 @@
 import controllers.ProgramController;
 import controllers.SubjectScoreController;
+import controllers.UniversityController;
 import controllers.UserController;
 
 import java.util.InputMismatchException;
@@ -9,17 +10,20 @@ public class GrantedApplication {
     private final SubjectScoreController subjectScoreController;
     private final UserController userController;
     private final ProgramController programController;
+    private final UniversityController universityController;
     private final Scanner scanner;
     private static final String MENU_LINE = "*****************************************";
 
     public GrantedApplication(
             SubjectScoreController subjectScoreController,
             UserController userController,
-            ProgramController programController
+            ProgramController programController,
+            UniversityController universityController
     ) {
         this.subjectScoreController = subjectScoreController;
         this.userController = userController;
         this.programController = programController;
+        this.universityController = universityController;
         this.scanner = new Scanner(System.in);
     }
 
@@ -46,6 +50,8 @@ public class GrantedApplication {
                     userMenu();
                 } else if (option == 3) {
                     programMenu();
+                } else if (option == 4) {
+                    universityMenu();
                 } else if (option == 0) {
                     break;
                 }
@@ -316,6 +322,100 @@ public class GrantedApplication {
         } catch (InputMismatchException e) {
             System.out.println("Incorrect input");
             scanner.nextLine(); // to ignore incorrect input
+        }
+    }
+
+    public void universityMenu() {
+        while (true) {
+            System.out.println(MENU_LINE);
+            System.out.println("University Menu");
+            System.out.println(MENU_LINE);
+
+            System.out.println("Select option: ");
+            System.out.println("1. Get All Universities");
+            System.out.println("2. Get University By ID");
+            System.out.println("3. Create University");
+            System.out.println("0. Go back");
+
+            try {
+                System.out.println("Enter option 1-3: ");
+                int option = scanner.nextInt();
+
+                if (option == 1) {
+                    getAllUniversitiesMenu();
+                } else if (option == 2) {
+                    getUniversityById();
+                } else if (option == 3) {
+                    createUniversityMenu();
+                } else if (option == 0) {
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input must be an integer");
+                scanner.nextLine(); // to ignore incorrect input
+            }
+        }
+    }
+
+    public void getAllUniversitiesMenu() {
+        System.out.println(MENU_LINE);
+        System.out.println("All Universities\n");
+
+        System.out.println(universityController.getAll());
+    }
+
+    public void getUniversityById() {
+        try {
+            System.out.println(MENU_LINE);
+
+            System.out.println("Enter id: ");
+
+            int id = scanner.nextInt();
+            System.out.println("\n" + universityController.getById(id) + "\n");
+        } catch (InputMismatchException e) {
+            System.out.println("Input must be integer");
+            scanner.nextLine(); // to ignore incorrect input
+        }
+    }
+
+    public void createUniversityMenu() {
+        try {
+
+            scanner.nextLine();
+            System.out.println(MENU_LINE);
+
+            System.out.println("Enter university name: ");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter how many university programs to input: ");
+            int numberOfPrograms = scanner.nextInt();
+            scanner.nextLine();
+
+            String[] programNames = new String[numberOfPrograms];
+            int[] minimumScores = new int[numberOfPrograms];
+            String[][] electivesArr = new String[numberOfPrograms][2];
+
+            for (int i = 0; i < programNames.length; i++) {
+                System.out.println("Enter program name: ");
+                programNames[i] = scanner.nextLine();
+
+                System.out.println("Enter minimum passing score: ");
+                minimumScores[i] = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Enter first elective subject name: ");
+                electivesArr[i][0] = scanner.nextLine();
+
+                System.out.println("Enter second elective subject name: ");
+                electivesArr[i][1] = scanner.nextLine();
+            }
+
+            System.out.println(
+                    "\n" + universityController.create(
+                            name, programNames, minimumScores, electivesArr
+                    ) + "\n");
+        } catch (InputMismatchException e) {
+            System.out.println("Incorrect input");
         }
     }
 }

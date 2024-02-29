@@ -62,6 +62,8 @@ public class UserRepository implements IUserRepository {
                 }
             }
         }
+
+        return users;
     }
 
     @Override

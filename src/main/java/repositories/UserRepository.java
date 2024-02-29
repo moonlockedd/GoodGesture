@@ -116,6 +116,44 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean create(User user) {
+        Connection con = null;
+
+        try {
+            con = db.getConnection();
+
+            String query = "INSERT INTO users (first_name,last_name," +
+                    "email,password,subject_score_ids) " +
+                    "VALUES(?,?,?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(query);
+
+            Integer[] idArr = new Integer[5];
+            for (int i = 0; i < user.getSubjectScores().size(); i++) {
+                idArr[i] = user.getSubjectScores().get(i).getId();
+            }
+            Array sqlArr = con.createArrayOf("integer", idArr);
+
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getPassword());
+            stmt.setArray(5, sqlArr);
+
+            stmt.execute();
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
         return false;
     }
+
 }

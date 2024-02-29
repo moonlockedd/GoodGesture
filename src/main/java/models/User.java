@@ -16,6 +16,18 @@ public class User {
     private String password;
     private List<SubjectScore> subjectScores;
 
+    public User(
+            String firstName, String lastName,
+            String email, String password,
+            List<SubjectScore> subjectScores
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.subjectScores = subjectScores;
+    }
+
     @Override
     public String toString() {
         return "User #" + getId() + ":\n" +

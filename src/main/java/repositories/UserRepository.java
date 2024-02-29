@@ -115,6 +115,59 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public User getLastCreated() {
+        Connection con = null;
+
+        try {
+            // Establish connection
+            con = db.getConnection();
+
+            // Create statement and execute it
+            String query = "SELECT id,first_name,last_name,email,password," +
+                    "subject_score_ids FROM users ORDER BY id DESC LIMIT 1";
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            // If table is not empty, return SubjectScore
+            if (rs.next()) {
+                Array sqlArr = rs.getArray("subject_score_ids");
+                Integer[] idArr = (Integer[]) sqlArr.getArray();
+
+                List<SubjectScore> subjectScores = subjectScoreRepo.getAllByIds(idArr);
+                if (subjectScores == null) {
+                    throw new InvalidNumberOfSubjectsException("Number of subjects must be 5");
+                }
+
+                return new User(
+                        rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        subjectScores
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (InvalidNumberOfSubjectsException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Try closing the connection
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        // Return null if table is empty or if exception is thrown
+        return null;
+    }
+
+    @Override
     public boolean create(User user) {
         Connection con = null;
 

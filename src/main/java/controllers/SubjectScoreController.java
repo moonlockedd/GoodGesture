@@ -42,8 +42,8 @@ public class SubjectScoreController {
         SubjectScore createdSubjectScore = subjectScoreService.create(subjectScore);
 
         // Return appropriate response
-        if (createdSubjectScore != null)
-            return "Created Subject Score\n" + createdSubjectScore;
-        return "Failed to create Subject Score";
+        if (createdSubjectScore == null)
+            return "Failed to create Subject Score";
+        return "Created Subject Score\n" + createdSubjectScore;
     }
 }

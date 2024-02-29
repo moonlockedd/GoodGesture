@@ -3,7 +3,7 @@ package repositories.interfaces;
 import models.Program;
 import java.util.List;
 
-public interface IProgrammRepository {
+public interface IProgramRepository {
     List<Program> getAll();
     Program getById(int id);
     boolean create(Program program);

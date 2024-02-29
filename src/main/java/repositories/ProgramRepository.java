@@ -3,7 +3,7 @@ package repositories;
 import data.interfaces.IDataBase;
 import lombok.AllArgsConstructor;
 import models.Program;
-import repositories.interfaces.IProgrammRepository;
+import repositories.interfaces.IProgramRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
-public class ProgrammRepository implements IProgrammRepository {
+public class ProgramRepository implements IProgramRepository {
     private final IDataBase db;
     @Override
     public List<Program> getAll() {

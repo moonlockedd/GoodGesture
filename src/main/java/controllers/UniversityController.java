@@ -21,7 +21,7 @@ public class UniversityController {
         StringBuilder response = new StringBuilder();
 
         for (University university : universities) {
-            response.append(university.toString()).append("\n\n");
+            response.append(university.toString()).append("\n");
         }
 
         return response.toString();

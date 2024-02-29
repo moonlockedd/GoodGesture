@@ -19,7 +19,7 @@ public final class University{
     private String getAllProgramsString() {
         StringBuilder programsString = new StringBuilder();
         for (Program p : getPrograms()) {
-            programsString.append(p.toString()).append("\n");
+            programsString.append(p.toString()).append("\n\n");
         }
 
         return programsString.toString();
@@ -29,7 +29,7 @@ public final class University{
     public String toString() {
         return "University #" + getId() + ":\n" +
                 getName() + "\n" +
-                "Available programs:" + "\n" +
+                "Available programs:\n\n" +
                 getAllProgramsString();
     }
 }

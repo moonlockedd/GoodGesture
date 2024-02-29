@@ -131,7 +131,7 @@ public class ProgramRepository implements IProgramRepository {
             }
         }
 
-        return null;
+        return programs;
     }
 
     @Override

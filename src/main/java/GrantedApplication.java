@@ -380,7 +380,6 @@ public class GrantedApplication {
 
     public void createUniversityMenu() {
         try {
-
             scanner.nextLine();
             System.out.println(MENU_LINE);
 

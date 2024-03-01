@@ -23,10 +23,12 @@ public class ProgramService implements IProgramService {
 
     @Override
     public Program create(Program program) {
+        // Check if created
         boolean created = programRepo.create(program);
 
         if (created)
             return programRepo.getLastCreated();
+        // Return null if failed to create
         return null;
     }
 }

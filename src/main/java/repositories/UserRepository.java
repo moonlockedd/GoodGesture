@@ -25,17 +25,22 @@ public class UserRepository implements IUserRepository {
         try {
             con = db.getConnection();
 
+            // Query to get all users
             String query = "SELECT id,first_name,last_name,email,password," +
                     "subject_score_ids FROM users";
             Statement stmt = con.createStatement();
 
             ResultSet rs = stmt.executeQuery(query);
 
+            // Iterate through result set, create User instance and add it to the list
             while (rs.next()) {
+                // Convert SQL array to integer array
                 Array sqlArr = rs.getArray("subject_score_ids");
                 Integer[] idArr = (Integer[]) sqlArr.getArray();
 
+                // Get all subject scores of user
                 List<SubjectScore> subjectScores = subjectScoreRepo.getAllByIds(idArr);
+                // Check if the number of subject scores is valid
                 if (subjectScores == null) {
                     throw new InvalidNumberOfSubjectsException("Number of subjects must be 5");
                 }
@@ -73,6 +78,7 @@ public class UserRepository implements IUserRepository {
         try {
             con = db.getConnection();
 
+            // Query to get user by id
             String query = "SELECT id,first_name,last_name,email,password," +
                     "subject_score_ids FROM users WHERE id=?";
             PreparedStatement stmt = con.prepareStatement(query);
@@ -80,11 +86,15 @@ public class UserRepository implements IUserRepository {
 
             ResultSet rs = stmt.executeQuery();
 
+            // If user in the table, return it
             if (rs.next()) {
+                // Convert SQL array to integer array
                 Array sqlArr = rs.getArray("subject_score_ids");
                 Integer[] idArr = (Integer[]) sqlArr.getArray();
 
+                // Get all subject scores of user
                 List<SubjectScore> subjectScores = subjectScoreRepo.getAllByIds(idArr);
+                // Check if the number of subject scores is valid
                 if (subjectScores == null) {
                     throw new InvalidNumberOfSubjectsException("Number of subjects must be 5");
                 }
@@ -120,22 +130,24 @@ public class UserRepository implements IUserRepository {
         Connection con = null;
 
         try {
-            // Establish connection
             con = db.getConnection();
 
-            // Create statement and execute it
+            // Query to get last created user
             String query = "SELECT id,first_name,last_name,email,password," +
                     "subject_score_ids FROM users ORDER BY id DESC LIMIT 1";
             Statement stmt = con.createStatement();
 
             ResultSet rs = stmt.executeQuery(query);
 
-            // If table is not empty, return SubjectScore
+            // If table is not empty, return user
             if (rs.next()) {
+                // Convert SQL array to integer array
                 Array sqlArr = rs.getArray("subject_score_ids");
                 Integer[] idArr = (Integer[]) sqlArr.getArray();
 
+                // Get all subject scores of user
                 List<SubjectScore> subjectScores = subjectScoreRepo.getAllByIds(idArr);
+                // Check if the number of subject scores is valid
                 if (subjectScores == null) {
                     throw new InvalidNumberOfSubjectsException("Number of subjects must be 5");
                 }
@@ -154,7 +166,6 @@ public class UserRepository implements IUserRepository {
         } catch (InvalidNumberOfSubjectsException e) {
             System.out.println(e.getMessage());
         } finally {
-            // Try closing the connection
             if (con != null) {
                 try {
                     con.close();
@@ -175,30 +186,39 @@ public class UserRepository implements IUserRepository {
         try {
             con = db.getConnection();
 
+            // Query to insert new user into the table
             String query = "INSERT INTO users (first_name,last_name," +
                     "email,password,subject_score_ids) " +
                     "VALUES(?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(query);
 
+            // List to store all subject scores
             List<SubjectScore> subjectScores = new ArrayList<>();
+            // Iterate through subject scores of user
             for (SubjectScore subjectScore : user.getSubjectScores()) {
+                // Insert new subject score to the table
                 boolean created = subjectScoreRepo.create(subjectScore);
 
+                // If insertion is successful, add it to the list
                 if (created) {
                     subjectScores.add(subjectScoreRepo.getLastCreated());
                 }
             }
 
+            // Check if the number of subject scores is valid
             if (subjectScores.size() != 5) {
                 throw new InvalidNumberOfSubjectsException("Number of subjects must be 5");
             }
 
+            // Integer array to store subject score ids
             Integer[] idArr = new Integer[5];
+            // Add ids to the array
             for (int i = 0; i < user.getSubjectScores().size(); i++) {
                 idArr[i] = subjectScores.get(i).getId();
             }
             Array sqlArr = con.createArrayOf("integer", idArr);
 
+            // Set fields
             stmt.setString(1, user.getFirstName());
             stmt.setString(2, user.getLastName());
             stmt.setString(3, user.getEmail());
@@ -207,6 +227,7 @@ public class UserRepository implements IUserRepository {
 
             stmt.execute();
 
+            // Return true if insertion is successful
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());

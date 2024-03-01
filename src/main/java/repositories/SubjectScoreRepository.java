@@ -20,16 +20,15 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         List<SubjectScore> subjectScores = new ArrayList<>();
 
         try {
-            // Establish connection
             con = db.getConnection();
 
-            // Create a statement and execute query
+            // Query to get all subject scores
             String query = "SELECT id,subject,score FROM subject_scores";
             Statement stmt = con.createStatement();
 
             ResultSet rs = stmt.executeQuery(query);
 
-            // Iterate through result set, create SubjectScores and add them to the list
+            // Iterate through result set, create SubjectScore and add it to the list
             while (rs.next()) {
                 SubjectScore subjectScore = new SubjectScore(
                         rs.getInt("id"),
@@ -43,7 +42,6 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
-            // Try closing the connection
             if (con != null) {
                 try {
                     con.close();
@@ -61,17 +59,16 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         Connection con = null;
 
         try {
-            // Establish connection
             con = db.getConnection();
 
-            // Prepare a statement and execute it
+            // Query to get subject score by id
             String query = "SELECT id,subject,score FROM subject_scores WHERE id=?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
 
-            // If SubjectScore with given id exists, return it
+            // If SubjectScore is in table return it
             if (rs.next()) {
                 return new SubjectScore(
                         rs.getInt("id"),
@@ -82,7 +79,6 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
-            // Try closing the connection
             if (con != null) {
                 try {
                     con.close();
@@ -92,7 +88,6 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
             }
         }
 
-        // Return null if SubjectScore with the given id does not exist
         return null;
     }
 
@@ -104,13 +99,16 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         try {
             con = db.getConnection();
 
+            // Iterate through ids
             for (Integer id : ids) {
+                // Query to get subject score with id
                 String query = "SELECT id,subject,score FROM subject_scores WHERE id=?";
                 PreparedStatement stmt = con.prepareStatement(query);
                 stmt.setInt(1, id);
 
                 ResultSet rs = stmt.executeQuery();
 
+                // If subject score is in table, add it to the list
                 if (rs.next()) {
                     subjectScores.add(new SubjectScore(
                             rs.getInt("id"),
@@ -120,6 +118,7 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
                 }
             }
 
+            // Return subject scores if their number is suitable
             if (subjectScores.size() == 5)
                 return subjectScores;
         } catch (SQLException e) {
@@ -142,22 +141,22 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         Connection con = null;
 
         try {
-            // Establish connection
             con = db.getConnection();
 
-            // Prepare a statement and execute it
+            // Query to insert new subject score into the table
             String query = "INSERT INTO subject_scores (subject,score) VALUES(?,?)";
             PreparedStatement stmt = con.prepareStatement(query);
+            // Set fields
             stmt.setString(1, subjectScore.getSubject());
             stmt.setInt(2, subjectScore.getScore());
 
             stmt.execute();
 
+            // Return true if creation is successful
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
-            // Try closing the connection
             if (con != null) {
                 try {
                     con.close();
@@ -175,10 +174,9 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         Connection con = null;
 
         try {
-            // Establish connection
             con = db.getConnection();
 
-            // Create statement and execute it
+            // Query to get the last created subject score
             String query = "SELECT id, subject, score FROM subject_scores " +
                     "ORDER BY id DESC LIMIT 1";
             Statement stmt = con.createStatement();
@@ -196,7 +194,6 @@ public class SubjectScoreRepository implements ISubjectScoreRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
-            // Try closing the connection
             if (con != null) {
                 try {
                     con.close();

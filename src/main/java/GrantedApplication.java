@@ -217,6 +217,7 @@ public class GrantedApplication {
 
                 System.out.println("Enter subject score: ");
                 scores[i] = scanner.nextInt();
+                // To ignore whitespace from previous input
                 scanner.nextLine();
             }
 
@@ -298,6 +299,7 @@ public class GrantedApplication {
 
     public void createProgramMenu() {
         try {
+            // To ignore whitespace from previous input
             scanner.nextLine();
             System.out.println(MENU_LINE);
 
@@ -306,6 +308,7 @@ public class GrantedApplication {
 
             System.out.println("Enter program minimum passing score: ");
             int minimumScore = scanner.nextInt();
+            // To ignore whitespace from previous input
             scanner.nextLine();
 
             String[] electiveSubjectNames = new String[2];
@@ -380,6 +383,7 @@ public class GrantedApplication {
 
     public void createUniversityMenu() {
         try {
+            // To ignore whitespace from previous input
             scanner.nextLine();
             System.out.println(MENU_LINE);
 
@@ -388,8 +392,10 @@ public class GrantedApplication {
 
             System.out.println("Enter how many university programs to input: ");
             int numberOfPrograms = scanner.nextInt();
+            // To ignore whitespace from previous input
             scanner.nextLine();
 
+            // Arrays to store program names, minimum scores, and elective subject names
             String[] programNames = new String[numberOfPrograms];
             int[] minimumScores = new int[numberOfPrograms];
             String[][] electivesArr = new String[numberOfPrograms][2];
